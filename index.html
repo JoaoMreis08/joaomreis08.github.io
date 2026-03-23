@@ -3,26 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>João Reis | Cyber Security Portfolio</title>
+    <title>[TEU NOME] | Cyber Security Portfolio</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         /* --- Variáveis de Cor (Estilo Hacker Clean) --- */
         :root {
-            --bg-color: #0a0a0a; /* Fundo quase preto */
-            --text-color: #e0e0e0; /* Texto claro mas não branco puro */
-            --main-green: #00ff41; /* Verde Matrix clássico */
-            --dark-green: #003300; /* Verde escuro para contrastes */
-            --hover-color: #ffffff; /* Cor ao passar o rato */
+            --bg-color: #0a0a0a;
+            --text-color: #e0e0e0;
+            --main-green: #00ff41;
             --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             --font-code: 'Courier New', Courier, monospace;
         }
 
-        /* --- Reset e Estilos Básicos --- */
+        /* --- Reset e Esconder Scrollbar --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        html { scroll-behavior: smooth; /* Scroll suave ao clicar nas tabs */ }
+        html { 
+            scroll-behavior: smooth; 
+            /* Esconder scrollbar no Firefox */
+            scrollbar-width: none; 
+        }
+
+        /* Esconder scrollbar no Chrome/Edge/Safari */
+        ::-webkit-scrollbar { 
+            display: none; 
+        }
 
         body {
             background-color: var(--bg-color);
@@ -39,20 +46,20 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1; /* Fica atrás de tudo */
-            opacity: 0.15; /* Suave para não atrapalhar a leitura */
+            z-index: -1;
+            opacity: 0.15;
         }
 
-        /* --- Header e Navegação (Canto Superior Direito) --- */
+        /* --- Navegação --- */
         header {
             position: fixed;
             top: 0;
             width: 100%;
             padding: 20px 50px;
             display: flex;
-            justify-content: flex-end; /* Alinha à direita */
+            justify-content: flex-end;
             z-index: 100;
-            background: linear-gradient(to bottom, rgba(10,10,10,1), rgba(10,10,10,0));
+            background: linear-gradient(to bottom, rgba(10,10,10,0.9), rgba(10,10,10,0));
         }
 
         nav ul { list-style: none; display: flex; gap: 30px; }
@@ -64,122 +71,101 @@
             font-size: 14px;
             text-transform: uppercase;
             letter-spacing: 2px;
-            transition: all 0.3s ease; /* Transição clean */
-            padding: 5px 0;
+            transition: all 0.3s ease;
             position: relative;
         }
 
-        /* Animação da linha a aparecer por baixo ao passar o rato */
         nav a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 1px;
-            bottom: 0;
-            left: 0;
-            background-color: var(--main-green);
+            content: ''; position: absolute; width: 0; height: 1px;
+            bottom: -5px; left: 0; background-color: var(--main-green);
             transition: width 0.3s ease;
         }
 
         nav a:hover { color: var(--main-green); text-shadow: 0 0 8px var(--main-green); }
         nav a:hover::after { width: 100%; }
 
-        /* --- Secção Principal (Hero) --- */
-        .hero {
-            height: 100vh;
+        /* --- Secções --- */
+        section {
+            min-height: 100vh;
+            padding: 100px 20px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
-            padding: 0 20px;
-            /* Animação de fade-in ao carregar */
-            animation: fadeIn 1.5s ease-out;
         }
 
-        /* Foto de Perfil Circular */
+        /* --- Hero (Home) --- */
+        .hero { text-align: center; animation: fadeIn 1.5s ease-out; }
+
         .pfp-container {
-            width: 150px;
-            height: 150px;
+            width: 150px; height: 150px;
             border-radius: 50%;
             border: 2px solid var(--main-green);
             overflow: hidden;
-            margin-bottom: 25px;
+            margin: 0 auto 25px auto;
             box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
             transition: transform 0.3s ease;
         }
+        .pfp-container:hover { transform: scale(1.05); }
+        .pfp-container img { width: 100%; height: 100%; object-fit: cover; }
 
-        .pfp-container:hover { transform: scale(1.05); /* Pequeno zoom clean */ }
+        .hero h1 { font-size: 2.5rem; color: var(--main-green); font-family: var(--font-code); text-shadow: 0 0 10px var(--main-green); margin-bottom: 10px; }
+        .hero p { font-size: 1.1rem; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; }
 
-        .pfp-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Garante que a cara não fica esticada */
-        }
-
-        .hero h1 {
-            font-size: 2.5rem;
-            color: var(--main-green);
-            font-family: var(--font-code);
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px var(--main-green);
-        }
-
-        .hero p {
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-            margin-bottom: 30px;
-            max-width: 600px;
-        }
-
-        /* --- Botões de Contacto --- */
-        .social-buttons { display: flex; gap: 20px; }
-
+        /* Botões Sociais */
+        .social-buttons { display: flex; justify-content: center; gap: 20px; }
         .btn-social {
-            text-decoration: none;
-            color: var(--main-green);
-            border: 1px solid var(--main-green);
-            padding: 12px 25px;
-            border-radius: 5px;
-            font-family: var(--font-code);
-            font-size: 14px;
-            transition: all 0.3s ease; /* Transição clean */
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            text-decoration: none; color: var(--main-green); border: 1px solid var(--main-green);
+            padding: 10px 20px; border-radius: 5px; font-family: var(--font-code); font-size: 14px;
+            transition: all 0.3s ease; display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.5);
         }
-
         .btn-social:hover {
-            background-color: var(--main-green);
-            color: var(--bg-color);
-            box-shadow: 0 0 15px var(--main-green);
-            transform: translateY(-3px); /* Sobe um bocadinho */
+            background-color: var(--main-green); color: var(--bg-color);
+            box-shadow: 0 0 15px var(--main-green); transform: translateY(-3px);
         }
 
-        /* --- Outras Secções (Placeholders para o Scroll funcionar) --- */
-        section {
-            height: 100vh; /* Cada secção ocupa o ecrã todo */
-            padding: 100px 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-top: 1px solid #1a1a1a;
+        /* --- Caixas de Conteúdo (Vidro Fosco) --- */
+        .content-box {
+            max-width: 800px; width: 100%;
+            background: rgba(22, 27, 34, 0.7);
+            padding: 40px; border-radius: 12px;
+            border: 1px solid #30363d;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease, border-color 0.3s ease;
         }
+        .content-box:hover { border-color: rgba(0, 255, 65, 0.3); transform: translateY(-5px); }
+        .content-box h2 { color: var(--main-green); margin-bottom: 20px; font-family: var(--font-code); border-bottom: 1px solid #30363d; padding-bottom: 10px;}
+        .content-box p { margin-bottom: 15px; font-size: 1.1rem; }
+        
+        /* Lista Career */
+        .job-item h3 { color: #58a6ff; margin-bottom: 5px; }
+        .date { color: #8b949e; font-size: 0.9rem; display: block; margin-bottom: 15px; }
+        .job-item ul { padding-left: 20px; }
+        .job-item li { margin-bottom: 10px; }
 
-        /* --- Animações --- */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* --- Projetos (Lista com Efeitos) --- */
+        .projects-list { display: flex; flex-direction: column; gap: 20px; width: 100%; }
+        .project-card {
+            background: rgba(15, 20, 25, 0.8);
+            border-left: 4px solid #30363d;
+            padding: 25px;
+            border-radius: 0 8px 8px 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
         }
-
-        /* --- Responsividade Básica --- */
-        @media (max-width: 768px) {
-            header { padding: 20px; justify-content: center; }
-            nav ul { gap: 15px; }
-            nav a { font-size: 12px; }
-            .hero h1 { font-size: 2rem; }
-            .social-buttons { flex-direction: column; gap: 10px; }
+        .project-card:hover {
+            border-left-color: var(--main-green);
+            background: rgba(22, 27, 34, 0.95);
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(0, 255, 65, 0.1);
         }
+        .project-card h3 { color: #58a6ff; margin-bottom: 10px; font-family: var(--font-code); transition: color 0.3s; }
+        .project-card:hover h3 { color: var(--main-green); }
+        .tag-container { margin-bottom: 10px; }
+        .tag { font-size: 0.7rem; font-weight: bold; background: #238636; color: white; padding: 4px 10px; border-radius: 4px; margin-right: 5px; text-transform: uppercase;}
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -200,188 +186,91 @@
     <main>
         <section id="home" class="hero">
             <div class="pfp-container">
-                <img src="assets/img/perfil.jpg" alt="João Reis">
+                <img src="assets/img/perfil.jpg" alt="Profile Picture">
             </div>
 
-            <h1>João Reis</h1>
-            <p><strong>Web Pentester | Threat Hunting & Logs | Vulnerability Analyst</strong></p>
-            <p>Atualmente focado em auditorias web e automação de logs.</p>
+            <h1>[TEU NOME]</h1>
+            <p><strong>Web Pentester | Threat Hunter | Security UI/UX</strong></p>
+            <p>Atualmente focado em auditorias web e automação de logs com dashboards visuais.</p>
             
             <div class="social-buttons">
-                <a href="https://www.linkedin.com/in/jo%C3%A3o-reis-22427738b/" target="_blank" class="btn-social">
-                    <i class="fab fa-linkedin-in"></i> LinkedIn
-                </a>
-                <a href="https://github.com/JoaoMreis08" target="_blank" class="btn-social">
-                    <i class="fab fa-github"></i> GitHub
-                </a>
-                <a href="mailto:joaopedromouralak@gmail.com" class="btn-social">
-                    <i class="fas fa-envelope"></i> Email
-                </a>
+                <a href="https://linkedin.com/in/TEULINKEDIN" target="_blank" class="btn-social"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
+                <a href="https://github.com/TEUGITHUB" target="_blank" class="btn-social"><i class="fab fa-github"></i> GitHub</a>
+                <a href="mailto:TEUEMAIL@email.com" class="btn-social"><i class="fas fa-envelope"></i> Email</a>
             </div>
         </section>
 
-       <section id="about">
-    <div class="content-box">
-        <h2><i class="fas fa-user-secret"></i> About Me</h2>
-        <p>I am a CTeSP Cybersecurity student at ISTEC Porto with a strong practical focus and a passion for offensive security and vulnerability research. I built some projects, such as a Pentest Prevention Platform, compete in CTFs, and work with tools and scripts, including CAIDO and Python for log collection and analysis. </p>
-        <p>My main interests lie in pentesting, intrusion detection, incident response and threat analysis and risk management, where I enjoy turning theoretical concepts into measurable outcomes. 
-</p>
-    </div>
-</section>
+        <section id="about">
+            <div class="content-box">
+                <h2><i class="fas fa-user-secret"></i> About Me</h2>
+                <p>Sou estudante de Cibersegurança apaixonado pela intersecção entre a **segurança ofensiva** e o **design funcional**. Acredito que a segurança só é verdadeiramente eficaz quando é compreensível.</p>
+                <p>Especializo-me em identificar vulnerabilidades web e em transformar dados complexos de telemetria em dashboards intuitivos, utilizando ferramentas de IA para prototipagem rápida e scripts em Python.</p>
+            </div>
+        </section>
 
-<section id="career">
-    <div class="content-box">
-        <h2><i class="fas fa-briefcase"></i> Career & Internship</h2>
-        <div class="job-item">
-            <h3>Estagiário de Cybersecurity | Covet Group (Boca do Lobo)</h3>
-            <span class="date">Março 2026 - Presente</span>
-            <ul>
-                <li>Execução de **Web Penetration Testing** em aplicações críticas, focando no OWASP Top 10.</li>
-                <li>Análise e correlação de **Logs de Sistema** para deteção proativa de ameaças (Threat Hunting).</li>
-                <li>Desenvolvimento de interfaces (UI/UX) para ferramentas internas de monitorização de segurança.</li>
-                <li>Automação de rotinas de auditoria utilizando scripts em **Python**.</li>
-            </ul>
-        </div>
-    </div>
-</section>
+        <section id="career">
+            <div class="content-box">
+                <h2><i class="fas fa-briefcase"></i> Career & Internship</h2>
+                <div class="job-item">
+                    <h3>Estagiário de Cybersecurity | [Nome da Empresa]</h3>
+                    <span class="date">Março 2026 - Presente</span>
+                    <ul>
+                        <li>Execução de **Web Penetration Testing** em aplicações críticas.</li>
+                        <li>Análise e correlação de **Logs de Sistema** para deteção proativa de ameaças.</li>
+                        <li>Desenvolvimento de interfaces (UI/UX) para ferramentas internas.</li>
+                        <li>Automação de rotinas de auditoria utilizando scripts.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
 
-<style>
-    .content-box {
-        max-width: 800px;
-        background: rgba(22, 27, 34, 0.8); /* Fundo semi-transparente para ver o Matrix atrás */
-        padding: 40px;
-        border-radius: 12px;
-        border: 1px solid #30363d;
-        backdrop-filter: blur(5px); /* Efeito de vidro fosco */
-    }
-    .content-box h2 { color: #00ff41; margin-bottom: 20px; font-family: 'Courier New', monospace; }
-    .content-box p { margin-bottom: 15px; font-size: 1.1rem; }
-    .job-item h3 { color: #58a6ff; margin-bottom: 5px; }
-    .date { color: #8b949e; font-size: 0.9rem; display: block; margin-bottom: 15px; }
-    .job-item ul { padding-left: 20px; }
-    .job-item li { margin-bottom: 10px; }
-</style>
         <section id="projects">
-    <div class="projects-container">
-        <h2><i class="fas fa-code-branch"></i> Selected Projects</h2>
-        
-        <div class="projects-grid">
-            <div class="project-card">
-                <div class="project-img">
-                    <img src="assets/img/dashboard-logs.jpg" alt="Log Dashboard">
-                </div>
-                <div class="project-info">
-                    <span class="tag">Python</span> <span class="tag">Stitch AI</span>
-                    <h3>Log Threat Visualizer</h3>
-                    <p>Interface para visualização de ataques de força bruta baseada em logs de servidores Linux.</p>
-                    <a href="#" class="view-link">View Project →</a>
+            <div class="content-box">
+                <h2><i class="fas fa-code-branch"></i> Selected Projects</h2>
+                <div class="projects-list">
+                    
+                    <div class="project-card">
+                        <div class="tag-container">
+                            <span class="tag">Python</span> <span class="tag">Logs</span>
+                        </div>
+                        <h3>[Nome do Projeto 1 no GitHub]</h3>
+                        <p>Descrição técnica do teu projeto. Script de automação que analisa ficheiros de logs e extrai IPs maliciosos...</p>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="tag-container">
+                            <span class="tag">Web Pentest</span> <span class="tag">OWASP</span>
+                        </div>
+                        <h3>[Nome do Projeto 2 no GitHub]</h3>
+                        <p>Descrição do segundo projeto. Ferramenta de scan de vulnerabilidades web ou write-up de CTF...</p>
+                    </div>
+
                 </div>
             </div>
-
-            <div class="project-card">
-                <div class="project-img">
-                    <img src="assets/img/pentest-report.jpg" alt="Pentest Report">
-                </div>
-                <div class="project-info">
-                    <span class="tag">Web Pentest</span> <span class="tag">OWASP</span>
-                    <h3>Web App Security Audit</h3>
-                    <p>Relatório técnico de exploração e correção de vulnerabilidades críticas em plataformas e-commerce.</p>
-                    <a href="#" class="view-link">Read Report →</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<style>
-    .projects-container { max-width: 1000px; width: 100%; }
-    .projects-grid { 
-        display: grid; 
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-        gap: 25px; 
-        margin-top: 30px; 
-    }
-    .project-card {
-        background: rgba(22, 27, 34, 0.9);
-        border: 1px solid #30363d;
-        border-radius: 10px;
-        overflow: hidden;
-        transition: all 0.3s ease;
-    }
-    .project-card:hover {
-        border-color: #00ff41;
-        transform: translateY(-10px);
-        box-shadow: 0 10px 20px rgba(0, 255, 65, 0.1);
-    }
-    .project-img { width: 100%; height: 180px; background: #1a1a1a; overflow: hidden; }
-    .project-img img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s; }
-    .project-card:hover .project-img img { opacity: 1; }
-    
-    .project-info { padding: 20px; }
-    .project-info h3 { color: #58a6ff; margin: 10px 0; }
-    .project-info p { font-size: 0.9rem; color: #8b949e; margin-bottom: 15px; }
-    .tag { font-size: 0.7rem; font-weight: bold; background: #238636; color: white; padding: 3px 8px; border-radius: 5px; margin-right: 5px; }
-    .view-link { font-size: 0.8rem; color: #00ff41; font-weight: bold; text-decoration: none; }
-</style>
+        </section>
     </main>
 
     <script>
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
+        canvas.height = window.innerHeight; canvas.width = window.innerWidth;
+        const characters = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+        const fontSize = 14; const columns = canvas.width / fontSize;
+        const drops = []; for (let x = 0; x < columns; x++) drops[x] = 1; 
 
-        // Garante que o canvas ocupa o ecrã todo
-        canvas.height = window.innerHeight;
-        canvas.width = window.innerWidth;
-
-        // Caracteres (Katakana, Latins, Números)
-        const characters = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        const charArray = characters.split('');
-
-        const fontSize = 14;
-        const columns = canvas.width / fontSize; // Número de colunas
-
-        // Array para controlar a posição 'y' de cada coluna
-        const drops = [];
-        for (let x = 0; x < columns; x++) {
-            drops[x] = 1; 
-        }
-
-        // Desenhar os caracteres
         function draw() {
-            // Fundo preto translúcido para criar o efeito de rasto
             ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = '#00ff41'; // Cor do texto (Verde Matrix)
-            ctx.font = fontSize + 'px arial';
-
-            // Loop por todas as colunas
+            ctx.fillStyle = '#00ff41'; ctx.font = fontSize + 'px arial';
             for (let i = 0; i < drops.length; i++) {
-                // Escolhe um caracter aleatório
-                const text = charArray[Math.floor(Math.random() * charArray.length)];
-                
-                // Desenha o caracter na posição (x,y)
-                // x = i * fontSize, y = drops[i] * fontSize
+                const text = characters[Math.floor(Math.random() * characters.length)];
                 ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-                // Se a gota chegar ao fundo, reinicia aleatoriamente para o topo
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-
-                // Incrementa a posição y
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
                 drops[i]++;
             }
         }
-
-        // Executa a função draw a cada 35ms (velocidade do efeito)
         setInterval(draw, 35);
-
-        // Ajusta o canvas se a janela mudar de tamanho
-        window.addEventListener('resize', () => {
-            canvas.height = window.innerHeight;
-            canvas.width = window.innerWidth;
-        });
+        window.addEventListener('resize', () => { canvas.height = window.innerHeight; canvas.width = window.innerWidth; });
     </script>
 </body>
 </html>
