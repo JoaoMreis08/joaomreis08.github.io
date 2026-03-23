@@ -3,38 +3,285 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teu Nome | Cyber Security Portfolio</title>
+    <title>João Reis | Cyber Security Portfolio</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        body { background-color: #0d1117; color: #c9d1d9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 40px; }
-        .container { max-width: 800px; margin: auto; }
-        h1 { color: #58a6ff; border-bottom: 1px solid #30363d; padding-bottom: 10px; }
-        .project-card { background: #161b22; border: 1px solid #30363d; padding: 20px; border-radius: 8px; margin-bottom: 20px; transition: 0.3s; }
-        .project-card:hover { border-color: #58a6ff; transform: translateY(-5px); }
-        .tag { background: #238636; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
-        a { color: #58a6ff; text-decoration: none; }
+        /* --- Variáveis de Cor (Estilo Hacker Clean) --- */
+        :root {
+            --bg-color: #0a0a0a; /* Fundo quase preto */
+            --text-color: #e0e0e0; /* Texto claro mas não branco puro */
+            --main-green: #00ff41; /* Verde Matrix clássico */
+            --dark-green: #003300; /* Verde escuro para contrastes */
+            --hover-color: #ffffff; /* Cor ao passar o rato */
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-code: 'Courier New', Courier, monospace;
+        }
+
+        /* --- Reset e Estilos Básicos --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html { scroll-behavior: smooth; /* Scroll suave ao clicar nas tabs */ }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- Canvas do Efeito Matrix --- */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Fica atrás de tudo */
+            opacity: 0.15; /* Suave para não atrapalhar a leitura */
+        }
+
+        /* --- Header e Navegação (Canto Superior Direito) --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: flex-end; /* Alinha à direita */
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(10,10,10,1), rgba(10,10,10,0));
+        }
+
+        nav ul { list-style: none; display: flex; gap: 30px; }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-family: var(--font-code);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease; /* Transição clean */
+            padding: 5px 0;
+            position: relative;
+        }
+
+        /* Animação da linha a aparecer por baixo ao passar o rato */
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--main-green);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover { color: var(--main-green); text-shadow: 0 0 8px var(--main-green); }
+        nav a:hover::after { width: 100%; }
+
+        /* --- Secção Principal (Hero) --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            /* Animação de fade-in ao carregar */
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        /* Foto de Perfil Circular */
+        .pfp-container {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 2px solid var(--main-green);
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .pfp-container:hover { transform: scale(1.05); /* Pequeno zoom clean */ }
+
+        .pfp-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Garante que a cara não fica esticada */
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            color: var(--main-green);
+            font-family: var(--font-code);
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px var(--main-green);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        /* --- Botões de Contacto --- */
+        .social-buttons { display: flex; gap: 20px; }
+
+        .btn-social {
+            text-decoration: none;
+            color: var(--main-green);
+            border: 1px solid var(--main-green);
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-family: var(--font-code);
+            font-size: 14px;
+            transition: all 0.3s ease; /* Transição clean */
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-social:hover {
+            background-color: var(--main-green);
+            color: var(--bg-color);
+            box-shadow: 0 0 15px var(--main-green);
+            transform: translateY(-3px); /* Sobe um bocadinho */
+        }
+
+        /* --- Outras Secções (Placeholders para o Scroll funcionar) --- */
+        section {
+            height: 100vh; /* Cada secção ocupa o ecrã todo */
+            padding: 100px 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-top: 1px solid #1a1a1a;
+        }
+
+        /* --- Animações --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Responsividade Básica --- */
+        @media (max-width: 768px) {
+            header { padding: 20px; justify-content: center; }
+            nav ul { gap: 15px; }
+            nav a { font-size: 12px; }
+            .hero h1 { font-size: 2rem; }
+            .social-buttons { flex-direction: column; gap: 10px; }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>[Teu Nome]</h1>
-        <p><strong>Web Pentester | Threat Hunting | Security UI/UX</strong></p>
-        <p>Estudante de Cibersegurança focado em automação de logs e ferramentas defensivas.</p>
-        
-        <h2>Projetos em Destaque</h2>
-        
-        <div class="project-card">
-            <span class="tag">Python</span> <span class="tag">Stitch AI</span>
-            <h3>Análise Visual de Logs</h3>
-            <p>Script que processa logs de servidor e gera dashboards intuitivos para deteção de ataques Brute Force.</p>
-            <a href="#">Ver no GitHub →</a>
-        </div>
 
-        <div class="project-card">
-            <span class="tag">Web Pentest</span>
-            <h3>Write-up: Exploração de XSS</h3>
-            <p>Documentação detalhada de uma vulnerabilidade encontrada em ambiente controlado (TryHackMe).</p>
-            <a href="#">Ler Relatório →</a>
-        </div>
-    </div>
+    <canvas id="matrix-canvas"></canvas>
+
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#career">Career</a></li>
+                <li><a href="#projects">Projects</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="pfp-container">
+                <img src="https://via.placeholder.com/150" alt="[Teu Nome] PFP">
+            </div>
+
+            <h1>João Reis</h1>
+            <p><strong>Web Pentester | Threat Hunting & Logs | Vulnerability Analyst</strong></p>
+            <p>Atualmente focado em auditorias web e automação de logs.</p>
+            
+            <div class="social-buttons">
+                <a href="https://www.linkedin.com/in/jo%C3%A3o-reis-22427738b/" target="_blank" class="btn-social">
+                    <i class="fab fa-linkedin-in"></i> LinkedIn
+                </a>
+                <a href="https://github.com/JoaoMreis08" target="_blank" class="btn-social">
+                    <i class="fab fa-github"></i> GitHub
+                </a>
+                <a href="mailto:joaopedromouralak@gmail.com" class="btn-social">
+                    <i class="fas fa-envelope"></i> Email
+                </a>
+            </div>
+        </section>
+
+        <section id="about"><h2>About Me</h2></section>
+        <section id="career"><h2>Career & Internship</h2></section>
+        <section id="projects"><h2>Projects</h2></section>
+    </main>
+
+    <script>
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Garante que o canvas ocupa o ecrã todo
+        canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth;
+
+        // Caracteres (Katakana, Latins, Números)
+        const characters = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const charArray = characters.split('');
+
+        const fontSize = 14;
+        const columns = canvas.width / fontSize; // Número de colunas
+
+        // Array para controlar a posição 'y' de cada coluna
+        const drops = [];
+        for (let x = 0; x < columns; x++) {
+            drops[x] = 1; 
+        }
+
+        // Desenhar os caracteres
+        function draw() {
+            // Fundo preto translúcido para criar o efeito de rasto
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00ff41'; // Cor do texto (Verde Matrix)
+            ctx.font = fontSize + 'px arial';
+
+            // Loop por todas as colunas
+            for (let i = 0; i < drops.length; i++) {
+                // Escolhe um caracter aleatório
+                const text = charArray[Math.floor(Math.random() * charArray.length)];
+                
+                // Desenha o caracter na posição (x,y)
+                // x = i * fontSize, y = drops[i] * fontSize
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                // Se a gota chegar ao fundo, reinicia aleatoriamente para o topo
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+
+                // Incrementa a posição y
+                drops[i]++;
+            }
+        }
+
+        // Executa a função draw a cada 35ms (velocidade do efeito)
+        setInterval(draw, 35);
+
+        // Ajusta o canvas se a janela mudar de tamanho
+        window.addEventListener('resize', () => {
+            canvas.height = window.innerHeight;
+            canvas.width = window.innerWidth;
+        });
+    </script>
 </body>
 </html>
