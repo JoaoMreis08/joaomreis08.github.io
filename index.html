@@ -3,212 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>João Reis | Cyber Security Portfolio</title>
+    <title>João Reis | Security Analyst</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* --- Variáveis de Cor (Estilo Hacker Clean) --- */
+        /* --- Variáveis de Cor (Estilo Deep Blue / Terminal) --- */
         :root {
-            --bg-color: #050505;
-            --text-color: #e0e0e0;
-            --main-green: #00ff41;
+            --bg-color: #060913;          /* Azul muito escuro para o fundo */
+            --terminal-bg: #0d111a;       /* Fundo da janela do terminal */
+            --terminal-border: #1e293b;   /* Borda da janela */
+            --text-color: #94a3b8;        /* Texto geral (cinza azulado) */
+            --text-bright: #e2e8f0;       /* Texto de destaque */
+            --main-blue: #00f0ff;         /* Azul Ciano (Cyber) */
+            --dark-blue: #3b82f6;         /* Azul secundário */
             --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            --font-code: 'Courier New', Courier, monospace;
+            --font-code: 'Consolas', 'Courier New', monospace;
         }
 
-        /* --- Reset e Esconder Scrollbar --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
-        html { 
-            scroll-behavior: smooth; 
-            scrollbar-width: none; 
-        }
-
-        ::-webkit-scrollbar { 
-            display: none; 
-        }
+        html { scroll-behavior: smooth; scrollbar-width: none; }
+        ::-webkit-scrollbar { display: none; }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: var(--font-main);
-            overflow-x: hidden;
-            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
         }
 
-        /* --- Canvas do Efeito Matrix --- */
+        /* --- Fundo Matrix (Agora em Tons de Azul) --- */
         #matrix-canvas {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -1;
-            opacity: 0.12; /* Ligeiramente mais escuro para o terminal brilhar mais */
+            opacity: 0.15;
         }
 
-        /* --- Navegação --- */
-        header {
-            position: fixed; top: 0; width: 100%; padding: 20px 50px;
-            display: flex; justify-content: flex-end; z-index: 100;
-            background: linear-gradient(to bottom, rgba(5,5,5,0.9), rgba(5,5,5,0));
+        /* --- ESTRUTURA DA JANELA DO TERMINAL --- */
+        .terminal-window {
+            width: 100%;
+            max-width: 900px;
+            background: var(--terminal-bg);
+            border: 1px solid var(--terminal-border);
+            border-radius: 10px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 240, 255, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: slideUp 0.8s ease-out;
         }
 
-        nav ul { list-style: none; display: flex; gap: 30px; }
+        /* Barra de Topo do Terminal (Estilo Mac/Linux) */
+        .terminal-header {
+            background: #0f172a;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--terminal-border);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .window-controls { display: flex; gap: 8px; }
+        .control-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot-red { background-color: #ff5f56; }
+        .dot-yellow { background-color: #ffbd2e; }
+        .dot-green { background-color: #27c93f; }
+
+        .terminal-title {
+            margin-left: auto; margin-right: auto;
+            color: #64748b; font-family: var(--font-code); font-size: 13px;
+            transform: translateX(-30px); /* Compensa o espaço das bolinhas para centrar */
+        }
+
+        /* Corpo do Terminal (Onde o conteúdo faz scroll) */
+        .terminal-body {
+            padding: 40px;
+            max-height: 80vh;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--main-blue) var(--terminal-bg);
+        }
         
-        nav a {
-            text-decoration: none; color: var(--text-color);
-            font-family: var(--font-code); font-size: 14px; text-transform: uppercase;
-            letter-spacing: 2px; transition: all 0.3s ease; position: relative;
-        }
-
-        nav a::after {
-            content: ''; position: absolute; width: 0; height: 1px;
-            bottom: -5px; left: 0; background-color: var(--main-green);
-            transition: width 0.3s ease;
-        }
-
-        nav a:hover { color: var(--main-green); text-shadow: 0 0 8px var(--main-green); }
-        nav a:hover::after { width: 100%; }
+        /* Barra de scroll customizada para o terminal */
+        .terminal-body::-webkit-scrollbar { width: 6px; }
+        .terminal-body::-webkit-scrollbar-track { background: var(--terminal-bg); }
+        .terminal-body::-webkit-scrollbar-thumb { background-color: var(--main-blue); border-radius: 10px; }
 
         /* --- Secções --- */
-        section {
-            min-height: 100vh; padding: 100px 20px;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        .section { margin-bottom: 50px; }
+        
+        .prompt-line {
+            font-family: var(--font-code);
+            color: var(--main-blue);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
         }
+        .prompt-line span.user { color: var(--text-bright); }
+        .prompt-line span.dir { color: var(--dark-blue); }
 
-        /* --- Hero (Home) --- */
-        .hero { text-align: center; }
+        /* --- Perfil e Hero --- */
+        .hero-section {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
 
         .pfp-container {
-            width: 150px; height: 150px; border-radius: 50%;
-            border: 2px solid var(--main-green); overflow: hidden;
-            margin: 0 auto 25px auto; box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
-            transition: transform 0.3s ease;
-            position: relative;
-            z-index: 10;
+            width: 140px; height: 140px; border-radius: 50%;
+            border: 2px solid var(--main-blue);
+            padding: 4px;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
         }
-        .pfp-container:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 255, 65, 0.6); }
-        .pfp-container img { width: 100%; height: 100%; object-fit: cover; }
+        .pfp-container img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 
-        /* Efeito de Máquina de Escrever (Terminal) */
-        .hero h1 { 
-            font-size: 2.5rem; color: var(--main-green); font-family: var(--font-code); 
-            text-shadow: 0 0 10px var(--main-green); margin-bottom: 10px;
-            overflow: hidden; white-space: nowrap; margin: 0 auto 10px auto;
-            border-right: .15em solid var(--main-green);
-            animation: typing 2s steps(30, end), blink-caret .75s step-end infinite;
-            display: inline-block;
+        .hero-text h1 { color: var(--text-bright); font-size: 2.2rem; margin-bottom: 5px; font-family: var(--font-code);}
+        .hero-text p.subtitle { color: var(--main-blue); font-size: 1.1rem; margin-bottom: 15px; font-family: var(--font-code);}
+        .hero-text p.desc { color: var(--text-color); max-width: 500px; line-height: 1.6; }
+
+        /* Links Sociais */
+        .social-links { margin-top: 15px; display: flex; gap: 15px; }
+        .social-links a {
+            color: var(--text-bright); text-decoration: none; font-size: 1.2rem;
+            transition: color 0.3s, transform 0.3s;
         }
-        
-        @keyframes typing { from { width: 0 } to { width: 100% } }
-        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--main-green); } }
+        .social-links a:hover { color: var(--main-blue); transform: translateY(-3px); }
 
-        .hero p { font-size: 1.1rem; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        /* --- Conteúdo Geral --- */
+        p.terminal-text { margin-bottom: 15px; line-height: 1.7; font-size: 1.05rem; }
+        strong { color: var(--text-bright); font-weight: 600; }
 
-        /* Botões Sociais */
-        .social-buttons { display: flex; justify-content: center; gap: 20px; position: relative; z-index: 10;}
-        .btn-social {
-            text-decoration: none; color: var(--main-green); border: 1px solid var(--main-green);
-            padding: 10px 20px; border-radius: 5px; font-family: var(--font-code); font-size: 14px;
-            transition: all 0.3s ease; display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.5);
+        /* --- Carreira --- */
+        .job-card {
+            border-left: 2px solid var(--dark-blue);
+            padding-left: 20px;
+            margin-top: 20px;
         }
-        .btn-social:hover {
-            background-color: var(--main-green); color: var(--bg-color);
-            box-shadow: 0 0 15px var(--main-green); transform: translateY(-3px);
-        }
+        .job-card h3 { color: var(--text-bright); margin-bottom: 5px; }
+        .job-card .date { color: var(--main-blue); font-size: 0.9rem; margin-bottom: 10px; display: block; font-family: var(--font-code); }
+        .job-card ul { list-style: none; }
+        .job-card li { margin-bottom: 8px; position: relative; padding-left: 20px; }
+        .job-card li::before { content: "»"; color: var(--main-blue); position: absolute; left: 0; font-weight: bold; }
 
-        /* --- Caixas de Conteúdo (Vidro Fosco + Terminal) --- */
-        .content-box {
-            max-width: 800px; width: 100%;
-            background: rgba(10, 15, 20, 0.85); /* Um pouco mais escuro estilo terminal */
-            padding: 40px; border-radius: 8px; /* Cantos menos redondos estilo terminal */
-            border: 1px solid #30363d;
-            backdrop-filter: blur(8px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            transition: transform 0.3s ease, border-color 0.3s ease;
-            position: relative;
-            z-index: 10;
+        /* --- Projetos --- */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
         }
-        .content-box:hover { border-color: rgba(0, 255, 65, 0.4); transform: translateY(-5px); }
-        .content-box h2 { color: var(--main-green); margin-bottom: 20px; font-family: var(--font-code); border-bottom: 1px dashed #30363d; padding-bottom: 10px;}
-        .content-box p { margin-bottom: 15px; font-size: 1.1rem; }
-        
-        /* Lista Career - Estilo Prompt */
-        .job-item h3 { color: #58a6ff; margin-bottom: 5px; font-family: var(--font-code);}
-        .date { color: #8b949e; font-size: 0.9rem; display: block; margin-bottom: 15px; font-family: var(--font-code);}
-        .job-item ul { padding-left: 0; list-style: none; }
-        .job-item li { margin-bottom: 10px; font-family: var(--font-code); color: #c9d1d9;}
-        .job-item li::before { content: ">_ "; color: var(--main-green); font-weight: bold; }
-
-        /* --- Projetos (Lista com Efeitos) --- */
-        .projects-list { display: flex; flex-direction: column; gap: 20px; width: 100%; }
         .project-card {
-            background: rgba(15, 20, 25, 0.9);
-            border-left: 4px solid #30363d;
-            padding: 25px;
-            border-radius: 0 4px 4px 0;
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid var(--terminal-border);
+            padding: 20px;
+            border-radius: 8px;
             transition: all 0.3s ease;
-            cursor: pointer;
         }
         .project-card:hover {
-            border-left-color: var(--main-green);
-            background: rgba(22, 27, 34, 1);
-            transform: translateX(10px);
-            box-shadow: 0 5px 15px rgba(0, 255, 65, 0.1);
+            border-color: var(--main-blue);
+            background: rgba(30, 41, 59, 0.8);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 240, 255, 0.05);
         }
-        .project-card h3 { color: #58a6ff; margin-bottom: 10px; font-family: var(--font-code); transition: color 0.3s; }
-        .project-card:hover h3 { color: var(--main-green); text-shadow: 0 0 5px var(--main-green);}
-        .project-card p { font-family: var(--font-main); color: #8b949e; }
-        .tag-container { margin-bottom: 10px; }
-        .tag { font-size: 0.7rem; font-weight: bold; background: #238636; color: white; padding: 4px 10px; border-radius: 2px; margin-right: 5px; text-transform: uppercase; font-family: var(--font-code);}
+        .project-card h3 { color: var(--text-bright); margin-bottom: 10px; font-family: var(--font-code); }
+        .project-card p { font-size: 0.95rem; margin-bottom: 15px; color: var(--text-color); }
         
+        .tags { display: flex; gap: 8px; flex-wrap: wrap; }
+        .tag {
+            font-size: 0.75rem; font-family: var(--font-code);
+            background: rgba(0, 240, 255, 0.1); color: var(--main-blue);
+            padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(0, 240, 255, 0.2);
+        }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Esconder Scrollbar globalmente (já que o scroll agora é dentro da janela) */
+        body::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
 
     <canvas id="matrix-canvas"></canvas>
 
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#career">Career</a></li>
-                <li><a href="#projects">Projects</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        <section id="home" class="hero">
-            <div class="pfp-container">
-                <img src="assets/img/perfil.jpg" alt="Profile Picture">
+    <div class="terminal-window">
+        
+        <div class="terminal-header">
+            <div class="window-controls">
+                <div class="control-dot dot-red"></div>
+                <div class="control-dot dot-yellow"></div>
+                <div class="control-dot dot-green"></div>
             </div>
+            <div class="terminal-title">joao-reis@portfolio:~</div>
+        </div>
 
-            <h1>joao@reis:~$</h1>
-            <p><strong>Web Pentester | Threat Hunting & Logs | Vulnerability Analyst</strong></p>
-            <p>Atualmente focado em Web pentesting e análise de vulnerabilidades.</p>
+        <div class="terminal-body">
             
-            <div class="social-buttons">
-                <a href="https://www.linkedin.com/in/jo%C3%A3o-reis-22427738b/" target="_blank" class="btn-social"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
-                <a href="https://github.com/JoaoMreis08" target="_blank" class="btn-social"><i class="fab fa-github"></i> GitHub</a>
-                <a href="mailto:joaopedromouralak@gmail.com" class="btn-social"><i class="fas fa-envelope"></i> Email</a>
+            <div class="section hero-section">
+                <div class="pfp-container">
+                    <img src="assets/img/perfil.jpg" alt="Profile Picture">
+                </div>
+                <div class="hero-text">
+                    <h1>João Reis</h1>
+                    <p class="subtitle">>_ Web Pentester & Vulnerability Analyst</p>
+                    <p class="desc">Atualmente focado em Web Pentesting, automação de processos e análise de vulnerabilidades operacionais.</p>
+                    
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/jo%C3%A3o-reis-22427738b/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/JoaoMreis08" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="mailto:joaopedromouralak@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
             </div>
-        </section>
 
-        <section id="about">
-            <div class="content-box">
-                <h2><i class="fas fa-user-secret"></i> cat about_me.txt</h2>
-                <p>Sou estudante de Cibersegurança apaixonado pela intersecção entre a <strong>segurança ofensiva</strong> e o <strong>design funcional</strong>. Acredito que a segurança só é verdadeiramente eficaz quando é compreensível.</p>
-                <p>Especializo-me em identificar vulnerabilidades web e em análise de vulnerabilidades, utilizando ferramentas de IA para protótipos rápidos e scripts em Python.</p>
+            <div class="section">
+                <div class="prompt-line">
+                    <span class="user">joao</span>@<span class="dir">portfolio</span>:~$ cat about_me.txt
+                </div>
+                <p class="terminal-text">Sou estudante de Cibersegurança apaixonado pela intersecção entre a <strong>segurança ofensiva</strong> e o <strong>design funcional</strong>. Acredito que a segurança só é verdadeiramente eficaz quando é compreensível.</p>
+                <p class="terminal-text">Especializo-me em identificar vulnerabilidades web e em análise de vulnerabilidades, utilizando ferramentas de IA para protótipos rápidos e scripts em Python para automatizar o aborrecido.</p>
             </div>
-        </section>
 
-        <section id="career">
-            <div class="content-box">
-                <h2><i class="fas fa-briefcase"></i> ./execute_career.sh</h2>
-                <div class="job-item">
+            <div class="section">
+                <div class="prompt-line">
+                    <span class="user">joao</span>@<span class="dir">portfolio</span>:~$ ./show_experience.sh
+                </div>
+                <div class="job-card">
                     <h3>Estagiário de Cybersecurity | Covet Group (Boca do Lobo)</h3>
-                    <span class="date">Março 2026 - Presente</span>
+                    <span class="date">[ Março 2026 - Presente ]</span>
                     <ul>
                         <li>Execução de Web Penetration Testing em aplicações críticas.</li>
                         <li>Análise e correlação de Logs de Sistema para deteção proativa de ameaças.</li>
@@ -217,62 +250,72 @@
                     </ul>
                 </div>
             </div>
-        </section>
 
-        <section id="projects">
-            <div class="content-box">
-                <h2><i class="fas fa-code-branch"></i> ls -la projects/</h2>
-                <div class="projects-list">
-                    
+            <div class="section">
+                <div class="prompt-line">
+                    <span class="user">joao</span>@<span class="dir">portfolio</span>:~$ ls -l ./projects
+                </div>
+                
+                <div class="projects-grid">
                     <div class="project-card">
-                        <div class="tag-container">
-                            <span class="tag">Scanner</span> <span class="tag">IPs</span>
-                        </div>
                         <h3>ip-threat-scanner</h3>
                         <p>Python threat scanner. Checks IP reputation using the AbuseIPDB API. Includes validation and support for multiple IPs.</p>
+                        <div class="tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">API</span>
+                            <span class="tag">OSINT</span>
+                        </div>
                     </div>
 
                     <div class="project-card">
-                        <div class="tag-container">
-                            <span class="tag">Web Pentest</span> <span class="tag">OWASP</span>
-                        </div>
                         <h3>Security-Headers-Checker</h3>
                         <p>A Python script that checks if a website uses the main HTTP security headers, and alerts which ones are missing.</p>
+                        <div class="tags">
+                            <span class="tag">Web Pentest</span>
+                            <span class="tag">OWASP</span>
+                        </div>
                     </div>
                     
                     <div class="project-card">
-                        <div class="tag-container">
-                            <span class="tag">URLs</span> <span class="tag">Vulnerability</span>
-                        </div>
                         <h3>simple-vulnerability-scanner</h3>
                         <p>A web vulnerability scanner that checks URLs for: Broken links, insecure forms, and missing security headers.</p>
+                        <div class="tags">
+                            <span class="tag">Automation</span>
+                            <span class="tag">Scanner</span>
+                        </div>
                     </div>
-
                 </div>
             </div>
-        </section>
-    </main>
 
-    <script>
+        </div> </div> <script>
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         canvas.height = window.innerHeight; canvas.width = window.innerWidth;
-        const characters = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+        const characters = '01'.split(''); // Fica mais "cyber" usando só binário
         const fontSize = 14; const columns = canvas.width / fontSize;
         const drops = []; for (let x = 0; x < columns; x++) drops[x] = 1; 
 
         function draw() {
-            ctx.fillStyle = 'rgba(5, 5, 5, 0.05)';
+            ctx.fillStyle = 'rgba(6, 9, 19, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#00ff41'; ctx.font = fontSize + 'px arial';
+            ctx.fillStyle = '#0066ff'; // Cor do texto matrix (Azul mais escuro)
+            ctx.font = fontSize + 'px monospace';
             for (let i = 0; i < drops.length; i++) {
                 const text = characters[Math.floor(Math.random() * characters.length)];
+                
+                // Brilho aleatório para algumas letras parecerem ciano
+                if(Math.random() > 0.95) {
+                    ctx.fillStyle = '#00f0ff';
+                } else {
+                    ctx.fillStyle = '#0f2b5e';
+                }
+
                 ctx.fillText(text, i * fontSize, drops[i] * fontSize);
                 if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
                 drops[i]++;
             }
         }
-        setInterval(draw, 35);
+        setInterval(draw, 50);
         window.addEventListener('resize', () => { canvas.height = window.innerHeight; canvas.width = window.innerWidth; });
     </script>
 </body>
