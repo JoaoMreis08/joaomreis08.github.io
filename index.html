@@ -163,7 +163,51 @@
             font-weight: 500;
             border: 1px solid #2d2d30;
         }
-
+        
+        footer {
+    padding: 60px 0 40px 0;
+    position: relative;
+    z-index: 10;
+        }
+        
+        .footer-line {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(39, 39, 42, 0) 0%, rgba(39, 39, 42, 1) 50%, rgba(39, 39, 42, 0) 100%);
+            margin-bottom: 40px;
+        }
+        
+        .footer-quote {
+            text-align: center;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .footer-quote p {
+            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--text-main);
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+        
+        .footer-quote span {
+            font-size: 0.75rem;
+            color: #71717a;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            color: #71717a;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 20px;
+        }
+        
         /* --- Scroll Progress Bar --- */
         .scroll-progress {
             position: fixed;
@@ -689,5 +733,20 @@
         init();
         animate();
     </script>
+
+    <footer>
+        <div class="container">
+            <div class="footer-line"></div>
+            
+            <div class="footer-quote">
+                <p>"The real problem is not whether machines think but whether men do."</p>
+                <span>— B.F. Skinner</span>
+            </div>
+    
+            <div class="footer-bottom">
+                <p>&copy; © 2026 JoaoMreis08. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
