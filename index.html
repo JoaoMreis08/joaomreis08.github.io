@@ -38,6 +38,132 @@
             position: relative;
         }
 
+        /* --- Career Timeline Estilo image_fdf18b --- */
+        .timeline-container {
+            position: relative;
+            padding-left: 40px; /* Espaço para a linha */
+            margin-top: 40px;
+        }
+        
+        /* A linha vertical cinzenta ao fundo */
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 5px;
+            bottom: 5px;
+            width: 2px;
+            background: #27272a; /* Cor da linha */
+            z-index: 1;
+        }
+        
+        .job-item {
+            position: relative;
+            margin-bottom: 30px;
+            z-index: 2;
+        }
+        
+        /* O círculo (nodo) na linha */
+        .job-node {
+            position: absolute;
+            left: -32px; /* Alinhado com a linha vertical */
+            top: 20px;
+            width: 14px;
+            height: 14px;
+            background-color: var(--bg-color);
+            border: 3px solid var(--accent-purple); /* Cor do contorno do círculo */
+            border-radius: 50%;
+            z-index: 3;
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+        }
+        
+        .job-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px;
+            display: flex;
+            gap: 20px;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        
+        .job-card:hover {
+            border-color: #3f3f46;
+            transform: translateX(10px);
+        }
+        
+        .job-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            background: #1f1f22;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 1px solid var(--border-color);
+            font-size: 1.2rem;
+            color: var(--text-main);
+        }
+        
+        .job-info { flex: 1; }
+        
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        
+        .job-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+        
+        .job-company {
+            color: var(--text-muted);
+            font-weight: 400;
+            text-decoration: none;
+            margin-left: 5px;
+        }
+        
+        .job-company:hover { color: var(--text-main); text-decoration: underline; }
+        
+        .job-meta {
+            font-family: var(--font-main);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6366f1; /* Azul arroxeado para as datas */
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .job-desc {
+            font-size: 0.95rem;
+            color: #a1a1aa;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        /* Tags de tecnologia estilo pílula cinzenta */
+        .tech-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .tech-tag {
+            background: #1e1e20;
+            color: #d4d4d8;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border: 1px solid #2d2d30;
+        }
+
         /* --- Scroll Progress Bar --- */
         .scroll-progress {
             position: fixed;
@@ -351,38 +477,58 @@
         <section id="career">
             <h2 class="section-title">Career & Education</h2>
             
-            <div class="job-item">
-                <div class="job-logo">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw5W6L6qWUW2ZUGkWvpMIuEjQ2kbYVi7Chbw&s" alt="Covet Group Logo">
-                </div>
-                <div class="job-content">
-                    <h3>Estagiário de Cibersegurança @ <a href="https://www.bocadolobo.com/en/" target="_blank">Covet Group (Boca do Lobo)</a></h3>
-                    <span class="job-date">Março 2026 - Presente</span>
-                    <p class="job-desc">Execução de Web Penetration Testing em aplicações críticas. Análise de Logs de Sistema para deteção proativa de ameaças. Desenvolvimento de interfaces para ferramentas internas e automação de rotinas de auditoria.</p>
-                    <div class="tech-tags">
-                        <span class="tech-tag">Web Pentest</span>
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">Log Analysis</span>
-                    </div>
-                </div>
-
+            <div class="timeline-container">
+                
                 <div class="job-item">
-                    <div class="job-logo">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMQ7CE1JEHWKhypimTrjyJwLYRmuYc9QxNBw&s" alt="ISTEC Porto Logo">
-                    </div>
-                    <div class="job-content">
-                        <h3>CTeSP em Cibersegurança @ <a href="https://istec-porto.pt/" target="_blank" rel="noopener noreferrer">ISTEC Porto</a></h3>
-                        <span class="job-date">2024 - 2026</span>
-                        <p class="job-desc">Estudo aprofundado de Redes Seguras, Ethical Hacking e Programação aplicada à cibersegurança.</p>
-                        <div class="tech-tags">
-                            <span class="tech-tag">Ethical Hacking</span>
-                            <span class="tech-tag">Network Security</span>
-                            <span class="tech-tag">Linux</span>
-                            <span class="tech-tag">Python</span>
+                    <div class="job-node"></div> <div class="job-card">
+                        <div class="job-logo">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw5W6L6qWUW2ZUGkWvpMIuEjQ2kbYVi7Chbw&s" alt="Covet Group Logo" style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px;">
+                        </div>
+                        <div class="job-info">
+                            <div class="job-header">
+                                <div class="job-title">
+                                    Estagiário de Cibersegurança <a href="https://www.bocadolobo.com/en/" target="_blank" class="job-company">@ Covet Group (Boca do Lobo)</a>
+                                </div>
+                                <div class="job-meta">Março 2026 - Presente</div>
+                            </div>
+                            <p class="job-desc">
+                                Execução de Web Penetration Testing em aplicações críticas. Análise de Logs de Sistema para deteção proativa de ameaças. Desenvolvimento de interfaces para ferramentas internas e automação de rotinas de auditoria.
+                            </p>
+                            <div class="tech-tags">
+                                <span class="tech-tag">Web Pentest</span>
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">Log Analysis</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
+        
+                <div class="job-item">
+                    <div class="job-node"></div> <div class="job-card">
+                        <div class="job-logo">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMQ7CE1JEHWKhypimTrjyJwLYRmuYc9QxNBw&s" alt="ISTEC Porto Logo" style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px;">
+                        </div>
+                        <div class="job-info">
+                            <div class="job-header">
+                                <div class="job-title">
+                                    CTeSP em Cibersegurança <a href="https://istec-porto.pt/" target="_blank" class="job-company">@ ISTEC Porto</a>
+                                </div>
+                                <div class="job-meta">2024 - 2026</div>
+                            </div>
+                            <p class="job-desc">
+                                Estudo aprofundado de Redes Seguras, Ethical Hacking e Programação aplicada à cibersegurança.
+                            </p>
+                            <div class="tech-tags">
+                                <span class="tech-tag">Ethical Hacking</span>
+                                <span class="tech-tag">Network Security</span>
+                                <span class="tech-tag">Linux</span>
+                                <span class="tech-tag">Python</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+            </div>
         </section>
 
         <section id="projects">
