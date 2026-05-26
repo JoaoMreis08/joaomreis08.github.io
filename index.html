@@ -219,7 +219,7 @@
             transition: width 0.1s ease-out;
         }
 
-        /* --- Luz que segue o cursor (Glow) --- */
+        /* --- Luz que segue o cursor --- */
         .cursor-glow {
             position: fixed;
             top: 0; left: 0;
@@ -326,6 +326,24 @@
         .hero-image-wrapper {
             position: relative;
             width: 320px; height: 320px; flex-shrink: 0;
+        }
+        .lang-btn {
+            background: #1e1e20;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: var(--font-main);
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .lang-btn:hover {
+            color: var(--text-main);
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
         }
         
         .hero-image-wrapper::before {
@@ -451,6 +469,7 @@
                     <li><a href="#skills" class="nav-link">skills</a></li>
                     <li><a href="#career" class="nav-link">career</a></li>
                     <li><a href="#projects" class="nav-link">projects</a></li>
+                    <li><button id="lang-switcher" class="lang-btn">EN</button></li>
                 </ul>
             </nav>
         </div>
@@ -622,6 +641,220 @@
     </div>
 
     <script>
+        // Translation System
+        const translations = {
+            pt: {
+                // Navigation
+                'nav-home': 'home',
+                'nav-about': 'about',
+                'nav-skills': 'skills',
+                'nav-career': 'career',
+                'nav-projects': 'projects',
+                
+                // Hero Section
+                'hero-title': 'Hello,<br>I\'m João<br>A Cybersecurity Student.',
+                'hero-subtitle': 'Web Pentester | Threat Hunting | Vulnerability Analyst',
+                
+                // About Section
+                'about-title': 'About Me',
+                'about-p1': 'Sou estudante de Cibersegurança apaixonado pela interseção entre a segurança ofensiva e o estudo de vulnerabilidades. Acredito que a segurança só é verdadeiramente eficaz quando é compreensível.',
+                'about-p2': 'Especializo-me em identificar vulnerabilidades web e em análise de vulnerabilidades, utilizando ferramentas de IA para protótipos rápidos e scripts em Python. Tenho uma abordagem prática e orientada à resolução de problemas para criar ambientes digitais mais seguros.',
+                'about-p3': 'Profissionalmente, tenho vindo a desenvolver competências em auditorias de segurança e automação de processos, integrando soluções que protegem a integridade de sistemas complexos. Procuro sempre aplicar estas skills em projetos inovadores que gerem impacto real no panorama da Cibersegurança.',
+                
+                // Skills Section
+                'skills-title': 'Skills & Tools',
+                'skills-languages': 'Languages',
+                'skills-cyber': 'Cyber Tools',
+                
+                // Career Section
+                'career-title': 'Career & Education',
+                'job1-title': 'Estagiário de Cibersegurança',
+                'job1-company': 'Covet Group - Boca do Lobo',
+                'job1-date': 'Março 2026 - Presente',
+                'job1-desc': 'Execução de Web Penetration Testing em aplicações críticas. Análise de Logs de Sistema para deteção proativa de ameaças. Desenvolvimento de interfaces para ferramentas internas e automação de rotinas de auditoria.',
+                'job2-title': 'CTeSP em Cibersegurança',
+                'job2-company': 'ISTEC Porto',
+                'job2-date': '2024 - 2026',
+                'job2-desc': 'Estudo aprofundado de Redes Seguras, Ethical Hacking e Programação aplicada à cibersegurança.',
+                
+                // Projects Section
+                'projects-title': 'Projects',
+                'projects-subtitle': '(click to see the repositories)',
+                'project1-title': 'ip-threat-scanner',
+                'project1-desc': 'Python threat scanner. Checks IP reputation using the AbuseIPDB API. Includes validation and support for multiple IPs.',
+                'project2-title': 'Security-Headers-Checker',
+                'project2-desc': 'A Python script that checks if a website uses the main HTTP security headers, and alerts which ones are missing.',
+                'project3-title': 'simple-vulnerability-scanner',
+                'project3-desc': 'A web vulnerability scanner that checks URLs for: Broken links, insecure forms, and missing security headers.',
+                
+                // Footer
+                'footer-quote': '"The real problem is not whether machines think but whether men do."',
+                'footer-author': '— B.F. Skinner',
+                'footer-copyright': '&copy; 2026 JoaoMreis08. All rights reserved.'
+            },
+            en: {
+                // Navigation
+                'nav-home': 'home',
+                'nav-about': 'about',
+                'nav-skills': 'skills',
+                'nav-career': 'career',
+                'nav-projects': 'projects',
+                
+                // Hero Section
+                'hero-title': 'Hello,<br>I\'m João<br>A Cybersecurity Student.',
+                'hero-subtitle': 'Web Pentester | Threat Hunting | Vulnerability Analyst',
+                
+                // About Section
+                'about-title': 'About Me',
+                'about-p1': 'I\'m a Cybersecurity student passionate about the intersection of offensive security and vulnerability research. I believe security is only truly effective when it\'s comprehensible.',
+                'about-p2': 'I specialize in identifying web vulnerabilities and vulnerability analysis, using AI tools for rapid prototyping and Python scripts. I have a practical, problem-solving approach to creating safer digital environments.',
+                'about-p3': 'Professionally, I have been developing expertise in security audits and process automation, integrating solutions that protect the integrity of complex systems. I always seek to apply these skills in innovative projects that create real impact in the Cybersecurity landscape.',
+                
+                // Skills Section
+                'skills-title': 'Skills & Tools',
+                'skills-languages': 'Languages',
+                'skills-cyber': 'Cyber Tools',
+                
+                // Career Section
+                'career-title': 'Career & Education',
+                'job1-title': 'Cybersecurity Intern',
+                'job1-company': 'Covet Group - Boca do Lobo',
+                'job1-date': 'March 2026 - Present',
+                'job1-desc': 'Execution of Web Penetration Testing on critical applications. System Log Analysis for proactive threat detection. Development of interfaces for internal tools and automation of audit routines.',
+                'job2-title': 'CTeSP in Cybersecurity',
+                'job2-company': 'ISTEC Porto',
+                'job2-date': '2024 - 2026',
+                'job2-desc': 'In-depth study of Secure Networks, Ethical Hacking and Programming applied to cybersecurity.',
+                
+                // Projects Section
+                'projects-title': 'Projects',
+                'projects-subtitle': '(click to see the repositories)',
+                'project1-title': 'ip-threat-scanner',
+                'project1-desc': 'Python threat scanner. Checks IP reputation using the AbuseIPDB API. Includes validation and support for multiple IPs.',
+                'project2-title': 'Security-Headers-Checker',
+                'project2-desc': 'A Python script that checks if a website uses the main HTTP security headers, and alerts which ones are missing.',
+                'project3-title': 'simple-vulnerability-scanner',
+                'project3-desc': 'A web vulnerability scanner that checks URLs for: Broken links, insecure forms, and missing security headers.',
+                
+                // Footer
+                'footer-quote': '"The real problem is not whether machines think but whether men do."',
+                'footer-author': '— B.F. Skinner',
+                'footer-copyright': '&copy; 2026 JoaoMreis08. All rights reserved.'
+            }
+        };
+
+        let currentLanguage = localStorage.getItem('language') || 'pt';
+
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('language', lang);
+            updatePageTranslations();
+            updateButtonState();
+        }
+
+        function updateButtonState() {
+            const langBtn = document.getElementById('lang-switcher');
+            langBtn.textContent = currentLanguage === 'pt' ? 'EN' : 'PT';
+        }
+
+        function updatePageTranslations() {
+            const lang = currentLanguage;
+            const trans = translations[lang];
+
+            // Update navigation
+            document.querySelectorAll('.nav-link').forEach((link, index) => {
+                const keys = ['nav-home', 'nav-about', 'nav-skills', 'nav-career', 'nav-projects'];
+                link.textContent = trans[keys[index]];
+            });
+
+            // Update hero section
+            const heroTitle = document.querySelector('.hero-text h1');
+            if (heroTitle) heroTitle.innerHTML = trans['hero-title'];
+            
+            const heroSubtitle = document.querySelector('.hero-subtitle');
+            if (heroSubtitle) heroSubtitle.textContent = trans['hero-subtitle'];
+
+            // Update section titles
+            const aboutTitle = document.querySelector('#about .section-title');
+            if (aboutTitle) aboutTitle.textContent = trans['about-title'];
+
+            const skillsTitle = document.querySelector('#skills .section-title');
+            if (skillsTitle) skillsTitle.textContent = trans['skills-title'];
+
+            const careerTitle = document.querySelector('#career .section-title');
+            if (careerTitle) careerTitle.textContent = trans['career-title'];
+
+            // Update about paragraphs
+            const aboutParagraphs = document.querySelectorAll('#about .about-card p');
+            if (aboutParagraphs[0]) aboutParagraphs[0].textContent = trans['about-p1'];
+            if (aboutParagraphs[1]) aboutParagraphs[1].textContent = trans['about-p2'];
+            if (aboutParagraphs[2]) aboutParagraphs[2].textContent = trans['about-p3'];
+
+            // Update skills categories
+            const skillsCategories = document.querySelectorAll('.skills-category h3');
+            if (skillsCategories[0]) skillsCategories[0].innerHTML = '<i class="fas fa-terminal"></i> ' + trans['skills-languages'];
+            if (skillsCategories[1]) skillsCategories[1].innerHTML = '<i class="fas fa-user-shield"></i> ' + trans['skills-cyber'];
+
+            // Update job items
+            const jobCards = document.querySelectorAll('.job-card');
+            if (jobCards[0]) {
+                jobCards[0].querySelector('.job-title').textContent = trans['job1-title'];
+                jobCards[0].querySelector('.job-company').textContent = '@ ' + trans['job1-company'];
+                jobCards[0].querySelector('.job-meta').textContent = trans['job1-date'];
+                jobCards[0].querySelector('.job-desc').textContent = trans['job1-desc'];
+            }
+            if (jobCards[1]) {
+                jobCards[1].querySelector('.job-title').textContent = trans['job2-title'];
+                jobCards[1].querySelector('.job-company').textContent = '@ ' + trans['job2-company'];
+                jobCards[1].querySelector('.job-meta').textContent = trans['job2-date'];
+                jobCards[1].querySelector('.job-desc').textContent = trans['job2-desc'];
+            }
+
+            // Update projects section
+            const projectsHeader = document.querySelector('.projects-header .section-title');
+            if (projectsHeader) projectsHeader.textContent = trans['projects-title'];
+
+            const projectsSubtitle = document.querySelector('.projects-subtitle');
+            if (projectsSubtitle) projectsSubtitle.textContent = trans['projects-subtitle'];
+
+            const projectCards = document.querySelectorAll('.project-card');
+            if (projectCards[0]) {
+                projectCards[0].querySelector('h3').textContent = trans['project1-title'];
+                projectCards[0].querySelector('p').textContent = trans['project1-desc'];
+            }
+            if (projectCards[1]) {
+                projectCards[1].querySelector('h3').textContent = trans['project2-title'];
+                projectCards[1].querySelector('p').textContent = trans['project2-desc'];
+            }
+            if (projectCards[2]) {
+                projectCards[2].querySelector('h3').textContent = trans['project3-title'];
+                projectCards[2].querySelector('p').textContent = trans['project3-desc'];
+            }
+
+            // Update footer
+            const footerQuote = document.querySelector('.footer-quote p');
+            if (footerQuote) footerQuote.textContent = trans['footer-quote'];
+
+            const footerAuthor = document.querySelector('.footer-quote span');
+            if (footerAuthor) footerAuthor.textContent = trans['footer-author'];
+
+            const footerCopyright = document.querySelector('.footer-bottom p');
+            if (footerCopyright) footerCopyright.innerHTML = trans['footer-copyright'];
+        }
+
+        // Language switcher button
+        document.getElementById('lang-switcher').addEventListener('click', () => {
+            setLanguage(currentLanguage === 'pt' ? 'en' : 'pt');
+        });
+
+        // Initialize language on page load
+        window.addEventListener('load', () => {
+            updateButtonState();
+            if (currentLanguage === 'en') {
+                updatePageTranslations();
+            }
+        });
+
         // Scroll Progress
         window.addEventListener('scroll', () => {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
