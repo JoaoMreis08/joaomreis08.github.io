@@ -4,18 +4,6 @@ Este repositório contém o código-fonte do meu portfólio profissional, focado
 
 🔗 **Live Demo:** [joaomreis08.github.io](https://joaomreis08.github.io)
 
-## Tecnologias Utilizadas
-- **Frontend:** HTML5, CSS3 (Modern UI/UX com Dark Mode).
-- **Interatividade:** JavaScript (Efeito Typewriter, Cursor Glow, Partículas Dinâmicas).
-- **Frameworks de Design:** FontAwesome para iconografia técnica.
-- **Hosting:** GitHub Pages.
-
-## Destaques do Código
-- **Typewriter Effect:** Análise de vulnerabilidade estética simulando um terminal no header principal.
-- **Dynamic Scroll:** Barra de progresso superior para melhor experiência de leitura.
-- **Responsive Design:** Totalmente adaptado para dispositivos móveis e desktops.
-- **Performance:** Carregamento otimizado com fontes externas pré-conectadas.
-
 ## Estrutura de Pastas
 ```text
 ├── assets/
